@@ -1,2 +1,2 @@
-# adress-classification-math-foundation-cs
-Assigment of maths foundation for computer science to classify adresses.
+# address-classification-math-foundation-cs
+Assignment of maths foundation for computer science to classify addresses.
