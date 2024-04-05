@@ -1,17 +1,21 @@
 import os
-
+import json
 import pytest
 import sys
 import pathlib
 
 project_dir = pathlib.Path(__file__).resolve().resolve().parent.parent
 sys.path.append(os.path.join(project_dir, 'scripts'))
+import classifier
+
+
+@pytest.fixture(autouse=True)
+def solution():
+    return classifier.Solution()
 
 
 @pytest.fixture()
-def basic_test_case():
-    addresses = []
-    with open('./test_cases/basic_wrong_case.txt', 'r') as f:
-        for line in f.readlines():
-            addresses.append(line.strip('\n'))
-    return addresses
+def public_test_cases():
+    f = open('test_cases/public_test.json')
+    data = json.load(f)
+    return data
