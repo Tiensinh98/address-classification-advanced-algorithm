@@ -16,6 +16,7 @@ def solution():
 
 @pytest.fixture()
 def public_test_cases():
-    f = open('test_cases/public_test.json')
+    test_file_path = str(project_dir) + '/tests/test_cases/public_test.json'
+    f = open(test_file_path)
     data = json.load(f)
     return data
