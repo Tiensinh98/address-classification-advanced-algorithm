@@ -1,6 +1,21 @@
+import pytest
 import time
-
+import json
 import numpy as np
+
+import classifier as clf
+
+
+@pytest.fixture(autouse=True)
+def solution():
+    return clf.Solution()
+
+
+@pytest.fixture()
+def full_address_cases():
+    f = open('cases/full_address_test_cases.json')
+    data = json.load(f)
+    return data
 
 
 def test_full_address_cases(solution, full_address_cases):
