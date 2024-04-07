@@ -1,21 +1,5 @@
 [
   {
-    "text": "TT Tân Bình Huyện Yên Sơn, Tuyên Quang",
-    "result": {
-      "province": "Tuyên Quang",
-      "district": "Yên Sơn",
-      "ward": "Tân Bình"
-    }
-  },
-  {
-    "text": "357/28,Ng-T- Thuật,P1,Q3,TP.HồChíMinh.",
-    "result": {
-      "province": "Hồ Chí Minh",
-      "district": "",
-      "ward": ""
-    }
-  },
-  {
     "text": "284DBis Ng Văn Giáo, P3, Mỹ Tho, T.Giang.",
     "result": {
       "province": "Tiền Giang",
@@ -3589,14 +3573,6 @@
       "district": "Na Hang",
       "ward": "Côn Lôn",
       "province": "Tuyên Quang"
-    }
-  },
-  {
-    "text": "Tân Hòa,H. Phú Tân,TnhAn Giang",
-    "result": {
-      "district": "Phú Tân",
-      "ward": "Tân Hòa",
-      "province": "An Giang"
     }
   }
 ]
