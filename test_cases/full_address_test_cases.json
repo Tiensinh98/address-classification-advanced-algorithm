@@ -840,14 +840,6 @@
     }
   },
   {
-    "text": "- Khu B Chu Hoà, Việt HhiPhú Thọ",
-    "result": {
-      "province": "Phú Thọ",
-      "district": "",
-      "ward": ""
-    }
-  },
-  {
     "text": "Thôn Am, xã Xuân Hương, Lạng Giang, Bắc Giang.",
     "result": {
       "province": "Bắc Giang",
@@ -883,7 +875,7 @@
     "text": "L10C12 Hẻm 90, Ng, Bỉnh Khiêm, TP. Rạch Giá, Kiên Giang",
     "result": {
       "province": "Kiên Giang",
-      "district": "",
+      "district": "Rạch Giá",
       "ward": ""
     }
   },
@@ -1196,7 +1188,7 @@
     "result": {
       "district": "Hải Lăng",
       "ward": "Hải Ba",
-      "province": ""
+      "province": "Quảng Trị"
     }
   },
   {
@@ -1210,7 +1202,7 @@
   {
     "text": "Phường Phú Lợi  TBình Dương",
     "result": {
-      "district": "",
+      "district": "Thủ Dầu Một",
       "ward": "Phú Lợi",
       "province": "Bình Dương"
     }
@@ -1221,14 +1213,6 @@
       "district": "Việt Yên",
       "ward": "Tự Lạn",
       "province": "Bắc Giang"
-    }
-  },
-  {
-    "text": " Bình Hiệp,H.Bình Sơn,TỉnhQuảng Ngãi",
-    "result": {
-      "district": "Bình Sơn",
-      "ward": "Bình Hiệp",
-      "province": "Quảng Ngãi"
     }
   },
   {
@@ -1248,14 +1232,6 @@
     }
   },
   {
-    "text": "Van Điểm, H hường TLín, Thành phốHa Nội",
-    "result": {
-      "district": "Thường Tín",
-      "ward": "Vạn Điểm",
-      "province": "Hà Nội"
-    }
-  },
-  {
     "text": "Thị Trấn Yên Bình  Yên Bình T Yên Bái",
     "result": {
       "district": "Yên Bình",
@@ -1264,43 +1240,11 @@
     }
   },
   {
-    "text": "XThạnh Đức, HGò Dầ6u, T Tây Ninh",
-    "result": {
-      "district": "Gò Dầu",
-      "ward": "Thạnh Đức",
-      "province": "Tây Ninh"
-    }
-  },
-  {
-    "text": "X.Thài Phìn Tủng, Huyện ĐồGg Van,  Hà Gxiang",
-    "result": {
-      "district": "Đồng Văn",
-      "ward": "Thài Phìn Tủng",
-      "province": "Hà Giang"
-    }
-  },
-  {
-    "text": "XãBù Gia Mập,,T Bình Phước",
-    "result": {
-      "district": "",
-      "ward": "Bù Gia Mập",
-      "province": "Bình Phước"
-    }
-  },
-  {
     "text": "Xã Mỹ Lương Yên Lập ",
     "result": {
       "district": "Yên Lập",
       "ward": "Mỹ Lương",
-      "province": ""
-    }
-  },
-  {
-    "text": ",H.Nqm Đàn, nghệ An",
-    "result": {
-      "district": "Nam Đàn",
-      "ward": "",
-      "province": "Nghệ An"
+      "province": "Phú Thọ"
     }
   },
   {
@@ -1330,17 +1274,9 @@
   {
     "text": "Xã La Dêê  Quảng Nam",
     "result": {
-      "district": "",
+      "district": "Nam Giang",
       "ward": "La Dêê",
       "province": "Quảng Nam"
-    }
-  },
-  {
-    "text": "XTân Thạnh, hAn Minh ",
-    "result": {
-      "district": "An Minh",
-      "ward": "Tân Thạnh",
-      "province": ""
     }
   },
   {
@@ -1354,25 +1290,9 @@
   {
     "text": "X.UThạnh Lợi  TỉnhLong An",
     "result": {
-      "district": "",
+      "district": "Bến Lức",
       "ward": "Thạnh Lợi",
       "province": "Long An"
-    }
-  },
-  {
-    "text": " Minh Tân,h.Lưng Tai,",
-    "result": {
-      "district": "Lương Tài",
-      "ward": "Minh Tân",
-      "province": ""
-    }
-  },
-  {
-    "text": "XãQuỳn1 Lâm, H. Quỳnh Phụ,  Thai Bình",
-    "result": {
-      "district": "Quỳnh Phụ",
-      "ward": "Quỳnh Lâm",
-      "province": "Thái Bình"
     }
   },
   {
@@ -1466,7 +1386,7 @@
   {
     "text": "Sơn Thủy T Quảng Bình",
     "result": {
-      "district": "",
+      "district": "Lệ Thủy",
       "ward": "Sơn Thủy",
       "province": "Quảng Bình"
     }
@@ -1477,14 +1397,6 @@
       "district": "Hoằng Hóa",
       "ward": "Hoằng Lưu",
       "province": "Thanh Hóa"
-    }
-  },
-  {
-    "text": "Xan Tiến, H. An Lão, ",
-    "result": {
-      "district": "An Lão",
-      "ward": "An Tiến",
-      "province": ""
     }
   },
   {
@@ -1504,35 +1416,11 @@
     }
   },
   {
-    "text": "X. HoDng Quỳ,,9hanh Hóa",
-    "result": {
-      "district": "",
-      "ward": "Hoằng Quỳ",
-      "province": "Thanh Hóa"
-    }
-  },
-  {
-    "text": "XãBình Chau,  Bình Sơn, Tỉnh Quảng Ngãi",
-    "result": {
-      "district": "Bình Sơn",
-      "ward": "Bình Châu",
-      "province": "Quảng Ngãi"
-    }
-  },
-  {
     "text": "X.Tân Tiến,H.Đồng Phú,",
     "result": {
       "district": "Đồng Phú",
       "ward": "Tân Tiến",
-      "province": ""
-    }
-  },
-  {
-    "text": "FHim Lam   Điện Biê",
-    "result": {
-      "district": "",
-      "ward": "Him Lam",
-      "province": "Điện Biên"
+      "province": "Bình Phước"
     }
   },
   {
@@ -1541,14 +1429,6 @@
       "district": "Ngũ Hành Sơn",
       "ward": "Hoà Quý",
       "province": "Đà Nẵng"
-    }
-  },
-  {
-    "text": " BảIn Sen H Mường Khương T5Lào Cai",
-    "result": {
-      "district": "Mường Khương",
-      "ward": "Bản Sen",
-      "province": "Lào Cai"
     }
   },
   {
@@ -1576,14 +1456,6 @@
     }
   },
   {
-    "text": "X. Trà DVưong Bắc Trà My TQuảg Nam",
-    "result": {
-      "district": "Bắc Trà My",
-      "ward": "Trà Dương",
-      "province": "Quảng Nam"
-    }
-  },
-  {
     "text": "X.Vĩnh thắng Gò quao T Kiên Giang",
     "result": {
       "district": "Gò Quao",
@@ -1604,7 +1476,7 @@
     "result": {
       "district": "Bá Thước",
       "ward": "Thiết Kế",
-      "province": ""
+      "province": "Thanh Hóa"
     }
   },
   {
@@ -1636,21 +1508,13 @@
     "result": {
       "district": "Yên Thành",
       "ward": "Tăng Thành",
-      "province": ""
-    }
-  },
-  {
-    "text": "XãTrung Lập,  Vĩnh Bảo,7 ",
-    "result": {
-      "district": "Vĩnh Bảo",
-      "ward": "Trung Lập",
-      "province": ""
+      "province": "Nghệ An"
     }
   },
   {
     "text": "Phường Ngoc Thụy  Thành phốHà Nội",
     "result": {
-      "district": "",
+      "district": "Long Biên",
       "ward": "Ngọc Thụy",
       "province": "Hà Nội"
     }
@@ -1706,7 +1570,7 @@
   {
     "text": "XãPhú Hưng  TBến tre",
     "result": {
-      "district": "",
+      "district": "Bến Tre",
       "ward": "Phú Hưng",
       "province": "Bến Tre"
     }
@@ -1736,22 +1600,6 @@
     }
   },
   {
-    "text": "XHòa Bqc, HDi Linh, ",
-    "result": {
-      "district": "Di Linh",
-      "ward": "Hòa Bắc",
-      "province": ""
-    }
-  },
-  {
-    "text": " Cộng Hòa,,TỉnhHaOi Dương",
-    "result": {
-      "district": "",
-      "ward": "Cộng Hòa",
-      "province": "Hải Dương"
-    }
-  },
-  {
     "text": "Đai TanHuyện Đại ộc,TỉnhQuảng Nam",
     "result": {
       "district": "Đại Lộc",
@@ -1773,22 +1621,6 @@
       "district": "Phong Thổ",
       "ward": "Sin Suối Hồ",
       "province": "Lai Châu"
-    }
-  },
-  {
-    "text": "X Sùng Phài T.P zai Châu T.Lai Châu",
-    "result": {
-      "district": "Lai Châu",
-      "ward": "Sùng Phài",
-      "province": "Lai Châu"
-    }
-  },
-  {
-    "text": " An Lowng Phú Giáo TBinh Dương",
-    "result": {
-      "district": "Phú Giáo",
-      "ward": "An Long",
-      "province": "Bình Dương"
     }
   },
   {
@@ -1828,7 +1660,7 @@
     "result": {
       "district": "Sông Hinh",
       "ward": "Hai Riêng",
-      "province": ""
+      "province": "Phú Yên"
     }
   },
   {
@@ -1874,7 +1706,7 @@
   {
     "text": "X. Hành Tín Tây  T.Quảng Ngãi",
     "result": {
-      "district": "",
+      "district": "Nghĩa Hành",
       "ward": "Hành Tín Tây",
       "province": "Quảng Ngãi"
     }
@@ -1916,7 +1748,7 @@
     "result": {
       "district": "Bát Xát",
       "ward": "Trịnh Tường",
-      "province": ""
+      "province": "Lào Cai"
     }
   },
   {
@@ -1940,7 +1772,7 @@
     "result": {
       "district": "Đông Hà",
       "ward": "4",
-      "province": ""
+      "province": "Quảng Trị"
     }
   },
   {
@@ -1965,14 +1797,6 @@
       "district": "Sông Công",
       "ward": "",
       "province": "Thái Nguyên"
-    }
-  },
-  {
-    "text": "F.07, Q6, ",
-    "result": {
-      "district": "6",
-      "ward": "07",
-      "province": ""
     }
   },
   {
@@ -2082,7 +1906,7 @@
   {
     "text": "X Châu Thuận7  TNghệ An",
     "result": {
-      "district": "",
+      "district": "Quỳ Châu",
       "ward": "Châu Thuận",
       "province": "Nghệ An"
     }
@@ -2156,7 +1980,7 @@
     "result": {
       "district": "Nam Đàn",
       "ward": "Nam Cát",
-      "province": ""
+      "province": "Nghệ An"
     }
   },
   {
@@ -2172,7 +1996,7 @@
     "result": {
       "district": "Cai Lậy",
       "ward": "Mỹ Thành Bắc",
-      "province": ""
+      "province": "Tiền Giang"
     }
   },
   {
@@ -2180,7 +2004,7 @@
     "result": {
       "district": "Krông Bông",
       "ward": "Cư Drăm",
-      "province": ""
+      "province": "Dắk Lắk"
     }
   },
   {
@@ -2224,14 +2048,6 @@
     }
   },
   {
-    "text": "Thị Trấn Nông Trường Việt lâm,Vị Xuyen,Ha Giang",
-    "result": {
-      "district": "Vị Xuyên",
-      "ward": "Nông Trường Việt Lâm",
-      "province": "Hà Giang"
-    }
-  },
-  {
     "text": ", Q11, Hồ Chí Minh",
     "result": {
       "district": "11",
@@ -2260,7 +2076,7 @@
     "result": {
       "district": "Đông Hưng",
       "ward": "Đông Cường",
-      "province": ""
+      "province": "Thái Bình"
     }
   },
   {
@@ -2306,7 +2122,7 @@
   {
     "text": "X.Đề Thám  T.Lạng Sơn",
     "result": {
-      "district": "",
+      "district": "Tràng Định",
       "ward": "Đề Thám",
       "province": "Lạng Sơn"
     }
@@ -2316,7 +2132,7 @@
     "result": {
       "district": "Thuận Thành",
       "ward": "Hà Mãn",
-      "province": ""
+      "province": "Bắc Ninh"
     }
   },
   {
@@ -2452,7 +2268,7 @@
     "result": {
       "district": "Tân Yên",
       "ward": "Quang Tiến",
-      "province": ""
+      "province": "Bắc Giang"
     }
   },
   {
@@ -2514,7 +2330,7 @@
   {
     "text": "X Đương Hoa  TQuảng Ninh",
     "result": {
-      "district": "",
+      "district": "hải Hà",
       "ward": "Đường Hoa",
       "province": "Quảng Ninh"
     }
@@ -2660,7 +2476,7 @@
     "result": {
       "district": "Thăng Bình",
       "ward": "Bình Sa",
-      "province": ""
+      "province": "Quảng Nam"
     }
   },
   {
@@ -2692,7 +2508,7 @@
     "result": {
       "district": "Gia Viễn",
       "ward": "Gia Vượng",
-      "province": ""
+      "province": "Ninh Bình"
     }
   },
   {
@@ -2730,7 +2546,7 @@
   {
     "text": "X.Yên Phong  Tỉnh Bắc Kạn",
     "result": {
-      "district": "",
+      "district": "Chợ Đồn",
       "ward": "Yên Phong",
       "province": "Bắc Kạn"
     }
@@ -2764,7 +2580,7 @@
     "result": {
       "district": "Buôn Đôn",
       "ward": "Ea Huar",
-      "province": ""
+      "province": "Đắk Lắk"
     }
   },
   {
@@ -2804,7 +2620,7 @@
     "result": {
       "district": "Kim Thành",
       "ward": "Cộng Hòa",
-      "province": ""
+      "province": "Hải Dương"
     }
   },
   {
@@ -2916,7 +2732,7 @@
     "result": {
       "district": "Phù Cát",
       "ward": "Cát Chánh",
-      "province": ""
+      "province": "Bình Định"
     }
   },
   {
@@ -2954,7 +2770,7 @@
   {
     "text": "Xthịnh Vượng,A , TG.Cao băng",
     "result": {
-      "district": "",
+      "district": "Nguyên Bình",
       "ward": "Thịnh Vượng",
       "province": "Cao Bằng"
     }
@@ -2980,7 +2796,7 @@
     "result": {
       "district": "Anh Sơn",
       "ward": "Đức Sơn",
-      "province": ""
+      "province": "Nghệ An"
     }
   },
   {
@@ -3044,7 +2860,7 @@
     "result": {
       "district": "Lâm Thao",
       "ward": "Bản Nguyên",
-      "province": ""
+      "province": "Phú Thọ"
     }
   },
   {
@@ -3122,7 +2938,7 @@
   {
     "text": "XDuy Hải  TQuảng Nam",
     "result": {
-      "district": "",
+      "district": "Duy Xuyên",
       "ward": "Duy Hải",
       "province": "Quảng Nam"
     }
@@ -3164,13 +2980,13 @@
     "result": {
       "district": "Đông Hưng",
       "ward": "Chương Dương",
-      "province": ""
+      "province": "Thái Bình"
     }
   },
   {
     "text": "Nậm Tin  Diện Biên",
     "result": {
-      "district": "",
+      "district": "Nậm Pồ",
       "ward": "Nậm Tin",
       "province": "Điện Biên"
     }
@@ -3228,7 +3044,7 @@
     "result": {
       "district": "Vũ Quang",
       "ward": "Đức Lĩnh",
-      "province": ""
+      "province": "Hà Tĩnh"
     }
   },
   {
@@ -3240,19 +3056,11 @@
     }
   },
   {
-    "text": " Yn phú, HBắc Mê, TỉnhV Hà giang",
-    "result": {
-      "district": "Bắc Mê",
-      "ward": "Yên Phú",
-      "province": "Hà Giang"
-    }
-  },
-  {
     "text": "Xuân Tân t.P Long Khánh ",
     "result": {
       "district": "Long Khánh",
       "ward": "Xuân Tân",
-      "province": ""
+      "province": "Đồng Nai"
     }
   },
   {
@@ -3306,7 +3114,7 @@
   {
     "text": "X.Phước Hiệp  Tỉnh Bến Tre",
     "result": {
-      "district": "",
+      "district": "Mỏ Cày Nam",
       "ward": "Phước Hiệp",
       "province": "Bến Tre"
     }
@@ -3418,7 +3226,7 @@
   {
     "text": "X. Thanh Phongjc , Tỉnhthanh hóa",
     "result": {
-      "district": "",
+      "district": "Như Xuân",
       "ward": "Thanh Phong",
       "province": "Thanh Hóa"
     }
@@ -3492,7 +3300,7 @@
     "result": {
       "district": "Ea Kar",
       "ward": "Ea Knốp",
-      "province": ""
+      "province": "Đắk Lắk"
     }
   },
   {
@@ -3525,14 +3333,6 @@
       "district": "Lệ Thủy",
       "ward": "",
       "province": "Quảng Bình"
-    }
-  },
-  {
-    "text": "F Tân bình  dĩ An ",
-    "result": {
-      "district": "Dĩ An",
-      "ward": "Tân Bình",
-      "province": ""
     }
   },
   {

@@ -30,5 +30,13 @@
       "district": "",
       "ward": ""
     }
+  },
+  {
+    "text": "F.07, Q6, ",
+    "result": {
+      "district": "6",
+      "ward": "07",
+      "province": ""
+    }
   }
 ]
