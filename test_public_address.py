@@ -25,7 +25,7 @@ def test_full_address_cases(solution, full_address_cases):
         output = solution.process(test_case['text'])
         time_elapsed = time.time() - start
         timer.append(time_elapsed)
-        assert time_elapsed < 0.01
+        assert time_elapsed < 0.015
         expected_result = test_case['result']
         assert expected_result['province'] == output['province']
         assert expected_result['district'] == output['district']

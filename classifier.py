@@ -3,6 +3,8 @@ import csv
 import typing as tp
 import numpy as np
 
+HCM_SPECIAL_NUMBERS = [str(i) for i in range(1, 20)]
+
 
 class TrieNode:
     __slots__ = ['node_name', 'real_name', 'children']
@@ -31,9 +33,7 @@ class Trie:
                 temp_root.children[node_name] = new_node
             temp_root = temp_root.children[node_name]
 
-    def search(self, node_names: list,
-               parent_node: tp.Union[TrieNode, None] = None,
-               use_missing_strategy=False) -> tp.Union[TrieNode, None]:
+    def search(self, node_names: list, parent_node: tp.Union[TrieNode, None] = None) -> tp.Union[TrieNode, None]:
         if parent_node is None:
             parent_node = self.root
         found_node = None
@@ -75,20 +75,40 @@ class Solution:
         shift = 0
         found_node = None
         found = False
-        while not found:
+        temp_found_word = None
+        while not found and shift - index <= len(sticky_address):
             current_word += sticky_address[index - shift]
             found_letter = self.letter_trie.search(list(current_word))
             index -= 1
             if found_letter is None:
+                if temp_found_word is not None:
+                    found_node = temp_found_word
+                    found = True
+                    index += 1
                 current_word = ''
                 shift += 1
                 index = -1
             else:
+                # TODO: check case overlapping numbers found i.e district 3 found but actual the correct answer is 13
                 found_word = self.word_trie.search([current_word[::-1]], parent_node=parent_node)
+                if current_word[::-1] in HCM_SPECIAL_NUMBERS and found_word is not None:
+                    if len(current_word) == 1:
+                        temp_found_word = found_word
+                        continue
+                    elif len(current_word) == 2:
+                        if found_word is None:
+                            index += 1
+                            found_word = temp_found_word
+                else:
+                    if temp_found_word is not None:
+                        found_word = temp_found_word
+                        index += 1
                 if found_word is not None:
                     found = True
                     found_node = found_word
-        return found_node, sticky_address[: index - shift + 1]
+        return (found_node,
+                sticky_address[: index - shift + 1]
+                if found_node is not None else sticky_address)
 
     def process(self, s: str):
         # Remove diacritics using unidecode
@@ -98,18 +118,60 @@ class Solution:
                           .replace(',', '')
                           .replace(' ', '')
                           .replace('.', '')
-                          .replace("'", '').lower())
+                          .replace("'", '')
+                          .replace("-", '').lower())
         province_node, sticky_address = self.find_trie_node(sticky_address)
+        if province_node is None:
+            province_nodes = self.word_trie.root.children.values()
+            possible_district_node_to_sticky_address = []
+            for node in province_nodes:
+                # TODO: check match letter cases above is subset of node.node_name
+                #  to filter out some irrelevant nodes
+                district_node, district_sticky_address = self.find_trie_node(
+                    sticky_address, parent_node=node)
+                if district_node is not None:
+                    possible_district_node_to_sticky_address.append(
+                        (district_node, node, district_sticky_address))
+            if len(possible_district_node_to_sticky_address) == 1:
+                district_node, province_node, sticky_address = possible_district_node_to_sticky_address[0]
+            elif len(possible_district_node_to_sticky_address) == 2:
+                second_district_node = possible_district_node_to_sticky_address[1][0]
+                second_province_node = possible_district_node_to_sticky_address[1][1]
+                if (second_district_node.node_name in HCM_SPECIAL_NUMBERS
+                        and second_province_node.node_name == 'hochiminh'):
+                    district_node = possible_district_node_to_sticky_address[0][0]
+                    province_node = possible_district_node_to_sticky_address[0][1]
+                else:
+                    district_node = None
+            else:
+                district_node = None
+        else:
+            district_node, sticky_address = self.find_trie_node(
+                sticky_address, parent_node=province_node)
+        if district_node is not None:
+            ward_node, _ = self.find_trie_node(sticky_address, parent_node=district_node)
+        else:
+            if province_node is None:
+                ward_node = None
+            else:
+                district_nodes = self.word_trie.root.children[
+                    province_node.node_name].children.values()
+                possible_ward_nodes = []
+                for node in district_nodes:
+                    ward_node, _ = self.find_trie_node(sticky_address, parent_node=node)
+                    if ward_node is not None:
+                        possible_ward_nodes.append(ward_node)
+                if len(possible_ward_nodes) == 1:
+                    ward_node = possible_ward_nodes[0]
+                else:
+                    ward_node = None
+        #
         province_name = ''
-        use_missing_strategy = True
         if province_node is not None:
             province_name = province_node.real_name
-            use_missing_strategy = False
-        district_node, sticky_address = self.find_trie_node(sticky_address, parent_node=province_node)
         district_name = ''
         if district_node is not None:
             district_name = district_node.real_name
-        ward_node, _ = self.find_trie_node(sticky_address, parent_node=district_node)
         ward_name = ''
         if ward_node is not None:
             ward_name = ward_node.real_name
@@ -119,3 +181,9 @@ class Solution:
             "district": district_name,
             "ward": ward_name,
         }
+
+
+if __name__ == '__main__':
+    input = "285 B/1A Bình Gĩa Phường 8,Vũng Tàu,Bà Rịa - Vũng Tàu"
+    solution = Solution()
+    solution.process(input)
