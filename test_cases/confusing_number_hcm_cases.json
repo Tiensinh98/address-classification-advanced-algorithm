@@ -1,0 +1,34 @@
+[
+  {
+    "text": "154/4/81 Nguyễn - Phúc Chu, P15, TB, TP. Hồ Chí Minh",
+    "result": {
+      "province": "Hồ Chí Minh",
+      "district": "",
+      "ward": ""
+    }
+  },
+  {
+    "text": "55/30 Nguyễn - Thượng Hiền,P5,BT, TP. Hồ Chí Minh",
+    "result": {
+      "province": "Hồ Chí Minh",
+      "district": "Bình Thạnh",
+      "ward": "5"
+    }
+  },
+  {
+    "text": "14.5 Block A2, The Mansion, ĐS 7,KDC 13E,Ấp 5,PP,BC, TP.HCM",
+    "result": {
+      "province": "Hồ Chí Minh",
+      "district": "",
+      "ward": ""
+    }
+  },
+  {
+    "text": "F2B PhanVănTr P.5,GV,TP.Hồ Chí Minh",
+    "result": {
+      "province": "Hồ Chí Minh",
+      "district": "",
+      "ward": ""
+    }
+  }
+]

@@ -33,7 +33,8 @@ class Trie:
                 temp_root.children[node_name] = new_node
             temp_root = temp_root.children[node_name]
 
-    def search(self, node_names: list, parent_node: tp.Union[TrieNode, None] = None) -> tp.Union[TrieNode, None]:
+    def search(self, node_names: list,
+               parent_node: tp.Union[TrieNode, None] = None) -> tp.Union[TrieNode, None]:
         if parent_node is None:
             parent_node = self.root
         found_node = None
@@ -112,7 +113,6 @@ class Solution:
 
     def process(self, s: str):
         # Remove diacritics using unidecode
-        print('Input address', s)
         address_without_diacritics = unidecode.unidecode(s)
         sticky_address = (address_without_diacritics
                           .replace(',', '')
@@ -184,6 +184,6 @@ class Solution:
 
 
 if __name__ == '__main__':
-    input = "285 B/1A Bình Gĩa Phường 8,Vũng Tàu,Bà Rịa - Vũng Tàu"
+    input = "L10C12 Hẻm 90, Ng, Bỉnh Khiêm, TP. Rạch Giá, Kiên Giang"
     solution = Solution()
     solution.process(input)
