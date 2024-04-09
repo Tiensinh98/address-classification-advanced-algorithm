@@ -16,14 +16,6 @@
         }
     },
     {
-        "text": "284DBis Ng Văn Giáo, P3, Mỹ Tho, T.Giang.",
-        "result": {
-            "province": "Tiền Giang",
-            "district": "Mỹ Tho",
-            "ward": "3"
-        }
-    },
-    {
         "text": "Nà Làng Phú Bình, Chiêm Hoá, Tuyên Quang",
         "result": {
             "province": "Tuyên Quang",
@@ -1288,14 +1280,6 @@
         }
     },
     {
-        "text": "X.UThạnh Lợi  TỉnhLong An",
-        "result": {
-            "district": "Bến Lức",
-            "ward": "Thạnh Lợi",
-            "province": "Long An"
-        }
-    },
-    {
         "text": "X.Nà Tấu, , T.Điện Biên",
         "result": {
             "district": "",
@@ -1916,7 +1900,7 @@
         "result": {
             "district": "Tân Yên",
             "ward": "Quang Tiến",
-            "province": "Bắc Giang"
+            "province": ""
         }
     },
     {

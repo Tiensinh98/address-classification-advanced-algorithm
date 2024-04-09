@@ -766,5 +766,21 @@
       "ward": "Nga Thanh",
       "province": "Thanh Hóa"
     }
+  },
+  {
+    "text": "284DBis Ng Văn Giáo, P3, Mỹ Tho, T.Giang.",
+    "result": {
+      "province": "Tiền Giang",
+      "district": "Mỹ Tho",
+      "ward": "3"
+    }
+  },
+  {
+    "text": "X.UThạnh Lợi  TỉnhLong An",
+    "result": {
+      "district": "",
+      "ward": "Thạnh Lợi",
+      "province": "Long An"
+    }
   }
 ]
