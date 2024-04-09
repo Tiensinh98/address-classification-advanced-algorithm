@@ -1,10 +1,12 @@
 import unidecode
 import csv
+import textdistance
 import typing as tp
 import numpy as np
 
 HCM_SPECIAL_NUMBERS = [str(i) for i in range(1, 20)]
 HCM = "hồchíminh"
+SPECIAL_KEYS = ["tỉnh", "huyện", "xã", "phường", "thịtrấn", "khuphố", "quận", "thànhphố"]
 
 
 class TrieNode:
@@ -63,7 +65,6 @@ class Solution:
     def __init__(self):
         # build trie
         self.phrase_trie = None
-        self.word_trie = None
         self.letter_trie = None
         self.build_trie('dataset/new_dataset.csv')
 
@@ -92,6 +93,11 @@ class Solution:
         temp_found_word = None
         while not found and shift - index <= len(sticky_address):
             current_word += sticky_address[index - shift]
+            if current_word[::-1] in SPECIAL_KEYS:
+                current_word = ''
+                index = -1
+                shift += 1
+                continue
             found_letter = self.letter_trie.search(list(unidecode.unidecode(current_word)))
             index -= 1
             if found_letter is None:
@@ -147,6 +153,9 @@ class Solution:
                         (district_node, node, district_sticky_address))
             if len(possible_district_node_to_sticky_address) == 1:
                 district_node, province_node, sticky_address = possible_district_node_to_sticky_address[0]
+                if len(s1 := s.split(',')) >= 2 and not len(s1[-1].replace(' ', '')):
+                    # suppose not length of district in input address, so maybe it doesn't have district
+                    province_node = None
             elif len(possible_district_node_to_sticky_address) == 2:
                 second_district_node, second_province_node, _ = possible_district_node_to_sticky_address[1]
                 if (second_district_node.node_name in HCM_SPECIAL_NUMBERS
@@ -162,6 +171,11 @@ class Solution:
                 sticky_address, parent_node=province_node, use_unidecode=True)
             if district_node is None:
                 sticky_address = before_sticky_address
+            else:
+                if province_node.node_name == HCM:
+                    if len(s1 := s.lower().split(',')) >= 2 and not district_node.real_name.lower() in s1[-2]:
+                        district_node = None
+                        sticky_address = before_sticky_address
         if district_node is not None:
             ward_node, _ = self.find_trie_node(
                 sticky_address, parent_node=district_node, use_unidecode=True)
@@ -213,6 +227,14 @@ class Solution:
 
 
 if __name__ == '__main__':
-    input = "Thái Ha, HBa Vì, T.pHNội"
+    input = "TT Tân Bình Huyện Yên Sơn, Tuyên Quang"
     solution = Solution()
     solution.process(input)
+
+# max_ratio = 0.0
+# found_node = None
+# for name, node in parent_node.children.items():
+#     ratio = textdistance.levenshtein.normalized_similarity(node_name, name)
+#     if ratio > max(0.80, max_ratio):
+#         max_ratio = ratio
+#         found_node = node

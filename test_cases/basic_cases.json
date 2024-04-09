@@ -1420,7 +1420,7 @@
         "result": {
             "district": "Đồng Phú",
             "ward": "Tân Tiến",
-            "province": "Bình Phước"
+            "province": ""
         }
     },
     {
@@ -1468,7 +1468,7 @@
         "result": {
             "district": "Bá Thước",
             "ward": "Thiết Kế",
-            "province": "Thanh Hóa"
+            "province": ""
         }
     },
     {
@@ -1476,7 +1476,7 @@
         "result": {
             "district": "Yên Thành",
             "ward": "Tăng Thành",
-            "province": "Nghệ An"
+            "province": ""
         }
     },
     {
@@ -1772,7 +1772,7 @@
         "result": {
             "district": "Nam Đàn",
             "ward": "Nam Cát",
-            "province": "Nghệ An"
+            "province": ""
         }
     },
     {
@@ -1780,7 +1780,7 @@
         "result": {
             "district": "Cai Lậy",
             "ward": "Mỹ Thành Bắc",
-            "province": "Tiền Giang"
+            "province": ""
         }
     },
     {
@@ -1820,7 +1820,7 @@
         "result": {
             "district": "Đông Hưng",
             "ward": "Đông Cường",
-            "province": "Thái Bình"
+            "province": ""
         }
     },
     {
@@ -1860,7 +1860,7 @@
         "result": {
             "district": "Thuận Thành",
             "ward": "Hà Mãn",
-            "province": "Bắc Ninh"
+            "province": ""
         }
     },
     {
@@ -2052,7 +2052,7 @@
         "result": {
             "district": "Gia Viễn",
             "ward": "Gia Vượng",
-            "province": "Ninh Bình"
+            "province": ""
         }
     },
     {
@@ -2108,7 +2108,7 @@
         "result": {
             "district": "Buôn Đôn",
             "ward": "Ea Huar",
-            "province": "Đắk Lắk"
+            "province": ""
         }
     },
     {
@@ -2204,7 +2204,7 @@
         "result": {
             "district": "Phù Cát",
             "ward": "Cát Chánh",
-            "province": "Bình Định"
+            "province": ""
         }
     },
     {
@@ -2308,7 +2308,7 @@
         "result": {
             "district": "Lâm Thao",
             "ward": "Bản Nguyên",
-            "province": "Phú Thọ"
+            "province": ""
         }
     },
     {
@@ -2404,7 +2404,7 @@
         "result": {
             "district": "Đông Hưng",
             "ward": "Chương Dương",
-            "province": "Thái Bình"
+            "province": ""
         }
     },
     {
@@ -2444,7 +2444,7 @@
         "result": {
             "district": "Vũ Quang",
             "ward": "Đức Lĩnh",
-            "province": "Hà Tĩnh"
+            "province": ""
         }
     },
     {
@@ -2660,7 +2660,7 @@
         "result": {
             "district": "Ea Kar",
             "ward": "Ea Knốp",
-            "province": "Đắk Lắk"
+            "province": ""
         }
     },
     {

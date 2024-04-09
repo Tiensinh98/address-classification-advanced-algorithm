@@ -8,6 +8,22 @@
     }
   },
   {
+    "text": "F2B PhanVănTr P.5,GV,TP.Hồ Chí Minh",
+    "result": {
+      "province": "Hồ Chí Minh",
+      "district": "",
+      "ward": ""
+    }
+  },
+  {
+    "text": "F.07, Q6, ",
+    "result": {
+      "district": "6",
+      "ward": "7",
+      "province": ""
+    }
+  },
+  {
     "text": "55/30 Nguyễn - Thượng Hiền,P5,BT, TP. Hồ Chí Minh",
     "result": {
       "province": "Hồ Chí Minh",
@@ -21,22 +37,6 @@
       "province": "Hồ Chí Minh",
       "district": "",
       "ward": ""
-    }
-  },
-  {
-    "text": "F2B PhanVănTr P.5,GV,TP.Hồ Chí Minh",
-    "result": {
-      "province": "Hồ Chí Minh",
-      "district": "",
-      "ward": ""
-    }
-  },
-  {
-    "text": "F.07, Q6, ",
-    "result": {
-      "district": "6",
-      "ward": "07",
-      "province": ""
     }
   }
 ]

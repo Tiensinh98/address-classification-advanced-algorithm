@@ -29,4 +29,4 @@ jobs:
         pip install -r requirements-python-3106.txt
     - name: Test address classification
       run: |
-        pytest --capture=no
+        pytest -s
