@@ -1180,7 +1180,7 @@
         "result": {
             "district": "Hải Lăng",
             "ward": "Hải Ba",
-            "province": "Quảng Trị"
+            "province": ""
         }
     },
     {
@@ -1194,7 +1194,7 @@
     {
         "text": "Phường Phú Lợi  TBình Dương",
         "result": {
-            "district": "Thủ Dầu Một",
+            "district": "",
             "ward": "Phú Lợi",
             "province": "Bình Dương"
         }

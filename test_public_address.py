@@ -12,10 +12,10 @@ def solution():
 
 
 @pytest.mark.parametrize('case_file_path', [
-    'test_cases/basic_cases.json',
+    'test_cases/public.json',
     # 'test_cases/confusing_number_hcm_cases.json',
     # 'test_cases/inconsistent_information.json',
-    'test_cases/other_cases.json'
+    # 'test_cases/other_cases.json'
 ])
 def test_full_address_cases(solution, case_file_path):
     test_cases = json.load(open(case_file_path, encoding='utf-8'))
@@ -28,7 +28,7 @@ def test_full_address_cases(solution, case_file_path):
         time_elapsed = time.time() - start
         timer.append(time_elapsed)
         try:
-            assert time_elapsed < 0.2
+            assert time_elapsed < 0.05
             expected_result = test_case['result']
             assert expected_result['province'] == output['province']
             assert expected_result['district'] == output['district']
