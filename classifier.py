@@ -6,8 +6,7 @@ import numpy as np
 HCM_SPECIAL_NUMBERS = [str(i) for i in range(1, 20)]
 HCM = "hồchíminh"
 SPECIAL_KEYS = ["tỉnh", "huyện", "xã",
-                "phường", "thịtrấn", "khuphố",
-                "quận", "thànhphố"]
+                "phường", "thịtrấn", "khuphố", "thànhphố"]
 SPECIAL_ADDRESSES = {"tphcm": "hồchíminh", "hcm": "hồchíminh"}
 
 
@@ -113,19 +112,27 @@ class Solution:
                 else:
                     if shift == 0:
                         extend_current_word = sticky_address[
-                                              -shift - len(current_word) - 3: -len(current_word)] + current_word[::-1]
+                                              -shift - len(current_word) - 4: -len(current_word)] + current_word[::-1]
                     else:
                         extend_current_word = sticky_address[
-                                              -shift - len(current_word) - 2: - shift]
+                                              -shift - len(current_word) - 3: - shift]
                     possible_found_node, ratio = self.try_get_address_by_similarity(extend_current_word, parent_node)
                     if possible_found_node is not None:
                         found_node = possible_found_node
                         found = True
                         index = - len(found_node.node_name) - 1
                     else:
-                        current_word = ''  # should we just trim the latest letter that makes the string not found?
-                        shift += 1
-                        index = -1
+                        # second try with full sticky address
+                        possible_found_node, ratio = self.try_get_address_by_similarity(
+                            sticky_address, parent_node)
+                        if possible_found_node is not None:
+                            found_node = possible_found_node
+                            found = True
+                            index = - len(found_node.node_name) - 1
+                        else:
+                            current_word = ''  # should we just trim the latest letter that makes the string not found?
+                            shift += 1
+                            index = -1
             else:
                 found_word = self.phrase_trie.search(
                     [current_word[::-1]], parent_node=parent_node, use_unidecode=use_unidecode)
@@ -158,21 +165,14 @@ class Solution:
         max_ratio = 0.0
         found_node = None
         for name, node in provinces.items():
-            if abs(len(name) - len(address)) < 2:
+            if abs(len(name) - len(address)) < 3:
                 ratio = similarity(address, name)
                 if ratio >= max(0.70, max_ratio):
                     max_ratio = ratio
                     found_node = node
         return found_node, max_ratio
 
-    def process(self, s: str):
-        # Remove diacritics using unidecode
-        sticky_address = (s.replace(',', '')
-                          .replace(' ', '')
-                          .replace('.', '')
-                          .replace("'", '')
-                          .replace("-", '').lower())
-        province_node, sticky_address, _ = self.find_trie_node(sticky_address, use_unidecode=True)
+    def find_district_node(self, sticky_address: str, province_node: TrieNode = None):
         if province_node is None:
             province_nodes = self.phrase_trie.root.children.values()
             possible_district_node_to_sticky_address = []
@@ -199,21 +199,14 @@ class Solution:
             else:
                 district_node, province_node, sticky_address, _ = sorted(
                     possible_district_node_to_sticky_address, key=lambda item: item[3])[-1]
-
-            if len(s1 := s.split(',')) >= 2 and not len(s1[-1].replace(' ', '')):
-                # suppose not length of district in input address, so maybe it doesn't have district
-                province_node = None
         else:
-            before_sticky_address = sticky_address
             district_node, sticky_address, _ = self.find_trie_node(
                 sticky_address, parent_node=province_node, use_unidecode=True)
-            if district_node is None:
-                sticky_address = before_sticky_address
-            else:
-                if province_node.node_name == HCM:
-                    if len(s1 := s.lower().split(',')) >= 2 and not district_node.real_name.lower() in s1[-2]:
-                        district_node = None
-                        sticky_address = before_sticky_address
+
+        return district_node, province_node, sticky_address
+
+    def find_ward_node(self, sticky_address: str,
+                       district_node: TrieNode = None, province_node=None):
         if district_node is not None:
             ward_node, _, _ = self.find_trie_node(
                 sticky_address, parent_node=district_node, use_unidecode=True)
@@ -234,9 +227,6 @@ class Solution:
                     ward_node = None
                 elif len(possible_ward_nodes) == 1:
                     ward_node, district_node, _ = possible_ward_nodes[0]
-                    if len(s1 := s.split(',')) >= 2 and not len(s1[-2].replace(' ', '')):
-                        # suppose not length of district in input address, so maybe it doesn't have district
-                        district_node = None
                 elif len(possible_ward_nodes) == 2:
                     second_ward_node, second_district_node, _ = possible_ward_nodes[1]
                     if second_ward_node.node_name in HCM_SPECIAL_NUMBERS:
@@ -244,14 +234,64 @@ class Solution:
                     else:
                         ward_node, district_node, _ = sorted(
                             possible_ward_nodes, key=lambda item: item[2])[-1]
-                    # suppose not length of district in input address, so maybe it doesn't have district
-                    if len(s1 := s.split(',')) >= 2 and not len(s1[-2].replace(' ', '')):
-                        # suppose not length of district in input address, so maybe it doesn't have district
-                        district_node = None
                 else:
                     ward_node, district_node, _ = sorted(
                         possible_ward_nodes, key=lambda item: item[2])[-1]
-        #
+        return ward_node, district_node
+
+    def process(self, s: str):
+        # Remove diacritics using unidecode
+        clean_address = (s.replace(' ', '')
+                          .replace('.', '')
+                          .replace("'", '')
+                          .replace("-", '').lower())
+        for key in SPECIAL_KEYS:
+            clean_address = clean_address.replace(key, '')
+        sticky_address = clean_address.replace(',', '')
+        segment_addresses = clean_address.split(',')
+
+        initial_province_address = segment_addresses[-1]
+        if len(initial_province_address) >= 1:
+            province_node, sticky_address_left, _ = self.find_trie_node(
+                initial_province_address, use_unidecode=True)
+            if len(segment_addresses) == 1:
+                sticky_address = sticky_address_left
+            else:
+                sticky_address = ''.join(segment_addresses[:-1]) + sticky_address_left
+        else:
+            province_node = None
+
+        if len(segment_addresses) >= 2:
+            initial_district_address = segment_addresses[-2]
+            if not len(initial_district_address):
+                district_node = None
+            else:
+                if len(segment_addresses[-1]) > 0:
+                    district_node, province_node, sticky_address_left = self.find_district_node(
+                        initial_district_address, province_node=province_node)
+                else:
+                    district_node, _, sticky_address_left = self.find_district_node(
+                        initial_district_address, province_node=province_node)
+                sticky_address = ''.join(segment_addresses[:-2]) + sticky_address_left
+        else:
+            district_node, province_node, sticky_address = self.find_district_node(
+                sticky_address, province_node=province_node)
+
+        if len(segment_addresses) >= 3:
+            initial_ward_address = segment_addresses[-3]
+            if not len(initial_ward_address):
+                ward_node = None
+            else:
+                if len(segment_addresses[-2]) > 0:
+                    ward_node, district_node = self.find_ward_node(
+                        sticky_address, district_node, province_node)
+                else:
+                    ward_node, _ = self.find_ward_node(
+                        sticky_address, district_node, province_node)
+        else:
+            ward_node, district_node = self.find_ward_node(
+                sticky_address, district_node, province_node)
+
         province_name = ''
         if province_node is not None:
             province_name = province_node.real_name
@@ -300,6 +340,8 @@ def similarity(s1, s2):
 
 
 if __name__ == '__main__':
-    input = " Minh Tân,h.Lưng Tai,"
+    input = "X.UThạnh Lợi  TỉnhLong An"
     solution = Solution()
-    solution.process(input)
+    output = solution.process(input)
+    print(output)
+
