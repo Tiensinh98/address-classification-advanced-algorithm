@@ -251,10 +251,10 @@ class Solution:
         segment_addresses = clean_address.split(',')
 
         initial_province_address = segment_addresses[-1]
-        if len(initial_province_address) >= 1:
+        if len(segment_addresses) >= 1:
             province_node, sticky_address_left, _ = self.find_trie_node(
                 initial_province_address, use_unidecode=True)
-            if len(segment_addresses) == 1:
+            if len(initial_province_address) == 0:
                 sticky_address = sticky_address_left
             else:
                 sticky_address = ''.join(segment_addresses[:-1]) + sticky_address_left
