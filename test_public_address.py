@@ -13,9 +13,9 @@ def solution():
 
 @pytest.mark.parametrize('case_file_path', [
     'test_cases/public.json',
-    # 'test_cases/confusing_number_hcm_cases.json',
-    # 'test_cases/inconsistent_information.json',
-    # 'test_cases/other_cases.json'
+    'test_cases/confusing_number_hcm_cases.json',
+    'test_cases/inconsistent_information.json',
+    'test_cases/other_cases.json'
 ])
 def test_full_address_cases(solution, case_file_path):
     test_cases = json.load(open(case_file_path, encoding='utf-8'))
@@ -27,20 +27,18 @@ def test_full_address_cases(solution, case_file_path):
         output = solution.process(test_case['text'])
         time_elapsed = time.time() - start
         timer.append(time_elapsed)
-        try:
-            assert time_elapsed < 0.05
-            expected_result = test_case['result']
-            assert expected_result['province'] == output['province']
-            assert expected_result['district'] == output['district']
-            assert expected_result['ward'] == output['ward']
+        expected_result = test_case['result']
+        ok = (expected_result['province'] == output['province']
+              and expected_result['district'] == output['district']
+              and expected_result['ward'] == output['ward'] and time_elapsed < 0.05)
+        if ok:
             count += 1
-        except AssertionError:
+        else:
             print('Failed!')
             print('Input Address', test_case['text'])
             print('Expected result', test_case['result'])
             print('Actual', output)
             print('Time Elapsed', time_elapsed)
-            continue
 
     print(f'Passed: {count} cases / {len(test_cases)}')
     assert np.average(timer) < 4. / 100, 'Average time exceeds the allowed amount of time.'

@@ -2,73 +2,12 @@ import unidecode
 import csv
 import typing as tp
 import numpy as np
+import trie
 
 HCM_SPECIAL_NUMBERS = [str(i) for i in range(1, 20)]
 HCM = "hồchíminh"
-SPECIAL_KEYS = ["tỉnh", "huyện", "xã",
-                "phường", "thịtrấn", "khuphố", "thànhphố"]
-SPECIAL_ADDRESSES = {"tphcm": "hồchíminh", "hcm": "hồchíminh"}
-
-
-class TrieNode:
-    __slots__ = ['node_name', 'real_name', 'children']
-
-    def __init__(self, node_name=None, real_name=None):
-        self.node_name = node_name
-        self.real_name = real_name
-        self.children = {}
-
-    def __repr__(self):
-        return f'TrieNode({self.node_name} - {self.real_name})'
-
-
-class Trie:
-    __slots = ['root']
-
-    def __init__(self):
-        self.root = TrieNode(node_name='root', real_name='Root')
-
-    def insert(self, insert_data: list):
-        temp_root = self.root
-        for data in insert_data:
-            node_name, real_name = data
-            if node_name not in temp_root.children:
-                new_node = TrieNode(node_name=node_name, real_name=real_name)
-                temp_root.children[node_name] = new_node
-            temp_root = temp_root.children[node_name]
-
-    @staticmethod
-    def get_node_by_similarity(input_name, current_node: TrieNode = None):
-        provinces = current_node.children
-        max_ratio = 0.0
-        found_node = None
-        for name, node in provinces.items():
-            if abs(len(name) - len(input_name)) < 3:
-                ratio = similarity(input_name, name)
-                if ratio >= max(0.65, max_ratio):
-                    max_ratio = ratio
-                    found_node = node
-        return found_node, max_ratio
-
-    def search(self, node_names: list,
-               parent_node: tp.Union[TrieNode, None] = None, use_similarity=False) -> tp.Union[TrieNode, None]:
-        if parent_node is None:
-            parent_node = self.root
-        found_node = None
-        for node_name in node_names:
-            found_node = parent_node.children.get(node_name, None)
-            if found_node is None:
-                if use_similarity:
-                    # compute similarity ratio between two strings
-                    found_node, _ = Trie.get_node_by_similarity(node_name, current_node=parent_node)
-                    if found_node is None:
-                        return None
-                    parent_node = parent_node.children[found_node.node_name]
-                else:
-                    return None
-            else:
-                parent_node = parent_node.children[node_name]
-        return found_node
+SPECIAL_KEYS = ["tỉnh", "huyện", "xã", "phường", "thịtrấn", "khuphố", "thànhphố"]
+SPECIAL_ADDRESSES = {"tphcm": HCM, "hcm": HCM}
 
 
 class Solution:
@@ -80,8 +19,8 @@ class Solution:
 
     def build_trie(self, data_filepath: str):
         with open(data_filepath, mode='r', encoding='utf-8') as file:
-            self.phrase_trie = Trie()
-            self.letter_trie = Trie()
+            self.phrase_trie = trie.Trie()
+            self.letter_trie = trie.Trie()
             csv_file = csv.reader(file)
             for line in csv_file:
                 self.phrase_trie.insert([
@@ -94,7 +33,12 @@ class Solution:
                     pairs = np.array([letters[::-1], letters[::-1]]).T.tolist()
                     self.letter_trie.insert(pairs)
 
-    def find_trie_node(self, sticky_address, parent_node=None, use_similarity=False) -> tp.Tuple[TrieNode, str]:
+    def find_trie_node(
+            self, sticky_address,
+            parent_node=None,
+            use_similarity=False
+    ) -> tp.Tuple[tp.Union[trie.TrieNode, None], str]:
+
         if use_similarity:
             found_node = self.phrase_trie.search(
                 [sticky_address], parent_node=parent_node, use_similarity=True)
@@ -146,13 +90,16 @@ class Solution:
                     found_node = found_word
         return found_node, sticky_address[: index - shift + 1] if found_node is not None else sticky_address
 
-    def find_district_node(self, sticky_address: str, province_node: TrieNode = None, use_similarity=False):
+    def find_district_node(
+            self, sticky_address: str,
+            province_node: trie.TrieNode = None,
+            use_similarity=False
+    ) -> tp.Tuple[tp.Union[trie.TrieNode, None], tp.Union[trie.TrieNode, None], str]:
+
         if province_node is None:
             province_nodes = self.phrase_trie.root.children.values()
             possible_district_node_to_sticky_address = []
             for node in province_nodes:
-                # TODO: check match letter cases above is subset of node.node_name
-                #  to filter out some irrelevant nodes
                 district_node, district_sticky_address = self.find_trie_node(
                     sticky_address, parent_node=node, use_similarity=use_similarity)
                 if district_node is not None:
@@ -178,7 +125,10 @@ class Solution:
         return district_node, province_node, sticky_address
 
     def find_ward_node(self, sticky_address: str,
-                       district_node: TrieNode = None, province_node=None, use_similarity=False):
+                       district_node: trie.TrieNode = None,
+                       province_node=None, use_similarity=False
+                       ) -> tp.Tuple[tp.Union[trie.TrieNode, None], tp.Union[trie.TrieNode, None]]:
+
         if district_node is not None:
             ward_node, _ = self.find_trie_node(
                 sticky_address, parent_node=district_node, use_similarity=use_similarity)
@@ -209,7 +159,12 @@ class Solution:
                     ward_node, district_node = possible_ward_nodes[0]
         return ward_node, district_node
 
-    def find_province_district_ward_node(self, segment_addresses, sticky_address, clean_address, use_similarity=False):
+    def find_province_district_ward_node(
+            self, segment_addresses,
+            sticky_address, clean_address,
+            use_similarity=False
+    ) -> tp.Tuple[tp.Union[trie.TrieNode, None], tp.Union[trie.TrieNode, None], tp.Union[trie.TrieNode, None]]:
+
         initial_province_address = remove_integer_from_string(segment_addresses[-1])
         initial_province_node = None
         if len(segment_addresses) >= 1:
@@ -321,36 +276,6 @@ class Solution:
         }
 
 
-def levenshtein_distance(s1, s2):
-    # Create a matrix to store the distances
-    matrix = [[0] * (len(s2) + 1) for _ in range(len(s1) + 1)]
-
-    # Initialize the first row and column
-    for i in range(len(s1) + 1):
-        matrix[i][0] = i
-    for j in range(len(s2) + 1):
-        matrix[0][j] = j
-
-    # Fill in the matrix
-    for i in range(1, len(s1) + 1):
-        for j in range(1, len(s2) + 1):
-            cost = 0 if s1[i - 1] == s2[j - 1] else 1
-            matrix[i][j] = min(matrix[i - 1][j] + 1,       # deletion
-                               matrix[i][j - 1] + 1,       # insertion
-                               matrix[i - 1][j - 1] + cost)  # substitution
-
-    # Return the bottom-right cell of the matrix
-    return matrix[len(s1)][len(s2)]
-
-
-def similarity(s1, s2):
-    max_length = max(len(s1), len(s2))
-    if max_length == 0:
-        return 1.0
-    else:
-        return 1.0 - levenshtein_distance(s1, s2) / max_length
-
-
 def remove_integer_from_string(s: str, excluded_numbers=None):
     if excluded_numbers is None:
         excluded_numbers = np.arange(10)
@@ -367,5 +292,4 @@ def remove_integer_from_string(s: str, excluded_numbers=None):
 if __name__ == '__main__':
     input = "F Tân bình  dĩ An "
     solution = Solution()
-    output = solution.process(input)
-    print(output)
+    solution.process(input)
