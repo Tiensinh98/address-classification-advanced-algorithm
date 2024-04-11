@@ -127,43 +127,54 @@ class Solution:
     def find_ward_node(self, sticky_address: str,
                        district_node: trie.TrieNode = None,
                        province_node=None, use_similarity=False
-                       ) -> tp.Tuple[tp.Union[trie.TrieNode, None], tp.Union[trie.TrieNode, None]]:
+                       ) -> tp.Tuple[tp.Union[trie.TrieNode, None], tp.Union[trie.TrieNode, None], str]:
 
         if district_node is not None:
-            ward_node, _ = self.find_trie_node(
+            ward_node, sticky_address = self.find_trie_node(
                 sticky_address, parent_node=district_node, use_similarity=use_similarity)
         else:
             if province_node is None:
                 # retrieve district/province from reverse trie?
                 ward_node = None
+                # province_nodes = self.phrase_trie.root.children.values()
+                # for p_node in province_nodes:
+                #     district_nodes = self.phrase_trie.root.children[
+                #         p_node.node_name].children.values()
+                #     for node in district_nodes:
+                #         ward_node, _ = self.find_trie_node(
+                #             sticky_address, parent_node=node)
+                #         if ward_node is not None:
+                #             break
             else:
                 district_nodes = self.phrase_trie.root.children[
                     province_node.node_name].children.values()
                 possible_ward_nodes = []
                 for node in district_nodes:
-                    ward_node, _ = self.find_trie_node(
+                    ward_node, ward_sticky_address = self.find_trie_node(
                         sticky_address, parent_node=node)
                     if ward_node is not None:
-                        possible_ward_nodes.append((ward_node, node))
+                        possible_ward_nodes.append((ward_node, node, ward_sticky_address))
                 if len(possible_ward_nodes) == 0:
                     ward_node = None
                 elif len(possible_ward_nodes) == 1:
-                    ward_node, district_node = possible_ward_nodes[0]
+                    ward_node, district_node, sticky_address = possible_ward_nodes[0]
                 elif len(possible_ward_nodes) == 2:
-                    second_ward_node, second_district_node = possible_ward_nodes[1]
+                    second_ward_node, second_district_node, sticky_address = possible_ward_nodes[1]
                     if second_ward_node.node_name in HCM_SPECIAL_NUMBERS:
-                        ward_node, district_node = possible_ward_nodes[0]
+                        ward_node, district_node, sticky_address = possible_ward_nodes[0]
                     else:
-                        ward_node, district_node = possible_ward_nodes[0]  # apply similarity here
+                        ward_node, district_node, sticky_address = possible_ward_nodes[0]  # apply similarity here
                 else:
-                    ward_node, district_node = possible_ward_nodes[0]
-        return ward_node, district_node
+                    ward_node, district_node, sticky_address = possible_ward_nodes[0]
+        return ward_node, district_node, sticky_address
 
     def find_province_district_ward_node(
             self, segment_addresses,
             sticky_address, clean_address,
             use_similarity=False
-    ) -> tp.Tuple[tp.Union[trie.TrieNode, None], tp.Union[trie.TrieNode, None], tp.Union[trie.TrieNode, None]]:
+    ) -> tp.Tuple[tp.Union[trie.TrieNode, None],
+    tp.Union[trie.TrieNode, None],
+    tp.Union[trie.TrieNode, None], str]:
 
         initial_province_address = remove_integer_from_string(segment_addresses[-1])
         initial_province_node = None
@@ -184,7 +195,7 @@ class Solution:
             if not len(initial_district_address):
                 district_node = None
             else:
-                if len(segment_addresses[-1]) > 0:
+                if len(segment_addresses[-1]) > 1:
                     district_node, province_node, sticky_address_left = self.find_district_node(
                         initial_district_address, province_node=province_node, use_similarity=use_similarity)
                 else:
@@ -201,20 +212,21 @@ class Solution:
             if not len(initial_ward_address):
                 ward_node = None
             else:
-                if len(segment_addresses[-2]) > 0:
-                    ward_node, district_node = self.find_ward_node(
+                if len(segment_addresses[-2]) > 1:
+                    ward_node, district_node, sticky_address_left = self.find_ward_node(
                         sticky_address, district_node, province_node, use_similarity=use_similarity)
                 else:
-                    ward_node, _ = self.find_ward_node(
+                    ward_node, _, sticky_address_left = self.find_ward_node(
                         sticky_address, district_node, province_node, use_similarity=use_similarity)
+                sticky_address = ''.join(segment_addresses[:-3]) + sticky_address_left
         else:
-            ward_node, district_node = self.find_ward_node(
+            ward_node, district_node, sticky_address = self.find_ward_node(
                 sticky_address, district_node, province_node, use_similarity=use_similarity)
 
             if ward_node is None:
                 # another attempt
                 if province_node is not None and district_node is not None:
-                    ward_node, _ = self.find_ward_node(
+                    ward_node, _, sticky_address = self.find_ward_node(
                         sticky_address, district_node, province_node, use_similarity=True)
 
             current_province_name = ''
@@ -233,7 +245,7 @@ class Solution:
                 if initial_district_node is None:
                     district_node = None
 
-        return province_node, district_node, ward_node
+        return province_node, district_node, ward_node, sticky_address
 
     def process(self, s: str):
         # Remove diacritics using unidecode
@@ -247,13 +259,39 @@ class Solution:
         sticky_address = clean_address.replace(',', '')
         segment_addresses = clean_address.split(',')
 
-        province_node, district_node, ward_node = self.find_province_district_ward_node(
+        province_node, district_node, ward_node, sticky_address_left = self.find_province_district_ward_node(
             segment_addresses, sticky_address, clean_address)
 
         output_nodes = [province_node, district_node, ward_node]
         if output_nodes.count(None) > 1:
-            province_node, district_node, ward_node = self.find_province_district_ward_node(
+            # for case that has no comma
+            # if len(segment_addresses) == 1:
+            #     for node in output_nodes:
+            #         if node is None:
+            #             continue
+            #         clean_address = clean_address.replace(node.node_name, '')
+            #         sticky_address = sticky_address.replace(node.node_name, '')
+            #     num_split = output_nodes.count(None)
+            #     wc_per_split = int(len(clean_address) / num_split)
+            #     new_segment_addresses = []
+            #     for i in range(num_split - 1):
+            #         new_segment_addresses.append(clean_address[i * wc_per_split: (i + 1) * wc_per_split])
+            #     new_segment_addresses.append(clean_address[(num_split - 1) * wc_per_split: ])
+            #     province_node1, district_node1, ward_node1, _ = self.find_province_district_ward_node(
+            #         new_segment_addresses, sticky_address, clean_address, use_similarity=True)
+            #     if province_node is None:
+            #         province_node = province_node1
+            #     if district_node is None:
+            #         district_node = district_node1
+            #     if ward_node is None:
+            #         ward_node = ward_node1
+            # else:
+            province_node, district_node, ward_node, _ = self.find_province_district_ward_node(
                 segment_addresses, sticky_address, clean_address, use_similarity=True)
+        elif output_nodes.count(None) == 1:
+            if ward_node is None:
+                ward_node, _, _ = self.find_ward_node(
+                    sticky_address_left, district_node, province_node, use_similarity=True)
 
         province_name = ''
         if province_node is not None:
@@ -290,6 +328,6 @@ def remove_integer_from_string(s: str, excluded_numbers=None):
 
 
 if __name__ == '__main__':
-    input = "F Tân bình  dĩ An "
+    input = "T.P Phan Rang-Tháp lhàm  Ninh Thuận"
     solution = Solution()
     solution.process(input)
