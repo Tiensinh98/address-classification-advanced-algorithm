@@ -41,4 +41,7 @@ def test_full_address_cases(solution, case_file_path):
             print('Time Elapsed', time_elapsed)
 
     print(f'Passed: {count} cases / {len(test_cases)}')
+    print("max: ", np.max(timer))
+    print("avarage: ", np.average(timer))
+    assert np.max(timer) < 0.2, 'Max time exceeds the allowed amount of time.'
     assert np.average(timer) < 4. / 100, 'Average time exceeds the allowed amount of time.'

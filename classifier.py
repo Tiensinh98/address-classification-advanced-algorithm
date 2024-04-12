@@ -33,16 +33,46 @@ class Solution:
                     pairs = np.array([letters[::-1], letters[::-1]]).T.tolist()
                     self.letter_trie.insert(pairs)
 
+    def find_trie_node_by_iterative_similarity(self, sticky_address, parent_node=None):
+        # quite expensive, since it checks similarity for every 2 possible letters in input
+        found_node = None
+        temp_sticky_address = sticky_address
+        index = -1
+        while len(temp_sticky_address) > 0 and found_node is None:
+            current_word = ''
+            for j in range(2, len(temp_sticky_address) + 1, 2):
+                if len(current_word) == 0:
+                    current_word = temp_sticky_address[-j: ] + current_word
+                else:
+                    current_word = temp_sticky_address[-j: -j + 2] + current_word
+                found_word = self.phrase_trie.search(
+                    [current_word], parent_node=parent_node, use_similarity=True)
+                if found_word is not None:
+                    found_node = found_word
+                    index = -j
+                    break
+            if len(temp_sticky_address) == 1:
+                temp_sticky_address = ''
+            else:
+                temp_sticky_address = temp_sticky_address[: -2]
+
+        return found_node, temp_sticky_address[: index] if found_node is not None else sticky_address
+
+
     def find_trie_node(
             self, sticky_address,
             parent_node=None,
-            use_similarity=False
+            use_similarity=False,
+            use_iterative_similarity=False
     ) -> tp.Tuple[tp.Union[trie.TrieNode, None], str]:
 
         if use_similarity:
             found_node = self.phrase_trie.search(
                 [sticky_address], parent_node=parent_node, use_similarity=True)
             return found_node, sticky_address if found_node is None else ''
+        if use_iterative_similarity:
+            return self.find_trie_node_by_iterative_similarity(
+                sticky_address, parent_node=parent_node)
 
         current_word = ''
         index = -1
@@ -93,7 +123,8 @@ class Solution:
     def find_district_node(
             self, sticky_address: str,
             province_node: trie.TrieNode = None,
-            use_similarity=False
+            use_similarity=False,
+            use_iterative_similarity=False
     ) -> tp.Tuple[tp.Union[trie.TrieNode, None], tp.Union[trie.TrieNode, None], str]:
 
         if province_node is None:
@@ -101,7 +132,9 @@ class Solution:
             possible_district_node_to_sticky_address = []
             for node in province_nodes:
                 district_node, district_sticky_address = self.find_trie_node(
-                    sticky_address, parent_node=node, use_similarity=use_similarity)
+                    sticky_address, parent_node=node,
+                    use_similarity=use_similarity,
+                    use_iterative_similarity=use_iterative_similarity)
                 if district_node is not None:
                     possible_district_node_to_sticky_address.append(
                         (district_node, node, district_sticky_address))
@@ -120,18 +153,23 @@ class Solution:
                 district_node, province_node, sticky_address = possible_district_node_to_sticky_address[0]
         else:
             district_node, sticky_address = self.find_trie_node(
-                sticky_address, parent_node=province_node, use_similarity=use_similarity)
+                sticky_address, parent_node=province_node,
+                use_similarity=use_similarity,
+                use_iterative_similarity=use_iterative_similarity)
 
         return district_node, province_node, sticky_address
 
     def find_ward_node(self, sticky_address: str,
                        district_node: trie.TrieNode = None,
-                       province_node=None, use_similarity=False
+                       province_node=None, use_similarity=False,
+                       use_iterative_similarity=False
                        ) -> tp.Tuple[tp.Union[trie.TrieNode, None], tp.Union[trie.TrieNode, None], str]:
 
         if district_node is not None:
             ward_node, sticky_address = self.find_trie_node(
-                sticky_address, parent_node=district_node, use_similarity=use_similarity)
+                sticky_address, parent_node=district_node,
+                use_similarity=use_similarity,
+                use_iterative_similarity=use_iterative_similarity)
         else:
             if province_node is None:
                 # retrieve district/province from reverse trie?
@@ -151,7 +189,8 @@ class Solution:
                 possible_ward_nodes = []
                 for node in district_nodes:
                     ward_node, ward_sticky_address = self.find_trie_node(
-                        sticky_address, parent_node=node)
+                        sticky_address, parent_node=node,
+                        use_iterative_similarity=use_iterative_similarity)
                     if ward_node is not None:
                         possible_ward_nodes.append((ward_node, node, ward_sticky_address))
                 if len(possible_ward_nodes) == 0:
@@ -171,7 +210,8 @@ class Solution:
     def find_province_district_ward_node(
             self, segment_addresses,
             sticky_address, clean_address,
-            use_similarity=False
+            use_similarity=False,
+            use_iterative_similarity=False
     ) -> tp.Tuple[tp.Union[trie.TrieNode, None],
     tp.Union[trie.TrieNode, None],
     tp.Union[trie.TrieNode, None], str]:
@@ -183,7 +223,8 @@ class Solution:
                 province_node = None
             else:
                 province_node, sticky_address_left = self.find_trie_node(
-                    initial_province_address, use_similarity=use_similarity)
+                    initial_province_address, use_similarity=use_similarity,
+                    use_iterative_similarity=use_iterative_similarity)
                 initial_province_node = province_node
                 sticky_address = ''.join(segment_addresses[:-1]) + sticky_address_left
         else:
@@ -197,14 +238,16 @@ class Solution:
             else:
                 if len(segment_addresses[-1]) > 1:
                     district_node, province_node, sticky_address_left = self.find_district_node(
-                        initial_district_address, province_node=province_node, use_similarity=use_similarity)
+                        initial_district_address, province_node=province_node,
+                        use_similarity=use_similarity, use_iterative_similarity=use_iterative_similarity)
                 else:
                     district_node, _, sticky_address_left = self.find_district_node(
-                        initial_district_address, province_node=province_node, use_similarity=use_similarity)
+                        initial_district_address, province_node=province_node,
+                        use_similarity=use_similarity, use_iterative_similarity=use_iterative_similarity)
                 sticky_address = ''.join(segment_addresses[:-2]) + sticky_address_left
         else:
             district_node, province_node, sticky_address = self.find_district_node(
-                sticky_address, province_node=province_node)
+                sticky_address, province_node=province_node, use_iterative_similarity=use_iterative_similarity)
             initial_district_node = district_node
 
         if len(segment_addresses) >= 3:
@@ -214,20 +257,25 @@ class Solution:
             else:
                 if len(segment_addresses[-2]) > 1:
                     ward_node, district_node, sticky_address_left = self.find_ward_node(
-                        sticky_address, district_node, province_node, use_similarity=use_similarity)
+                        sticky_address, district_node, province_node,
+                        use_similarity=use_similarity,
+                        use_iterative_similarity=use_iterative_similarity)
                 else:
                     ward_node, _, sticky_address_left = self.find_ward_node(
-                        sticky_address, district_node, province_node, use_similarity=use_similarity)
+                        sticky_address, district_node, province_node,
+                        use_similarity=use_similarity, use_iterative_similarity=use_iterative_similarity)
                 sticky_address = ''.join(segment_addresses[:-3]) + sticky_address_left
         else:
             ward_node, district_node, sticky_address = self.find_ward_node(
-                sticky_address, district_node, province_node, use_similarity=use_similarity)
+                sticky_address, district_node, province_node,
+                use_similarity=use_similarity, use_iterative_similarity=use_iterative_similarity)
 
             if ward_node is None:
                 # another attempt
                 if province_node is not None and district_node is not None:
                     ward_node, _, sticky_address = self.find_ward_node(
-                        sticky_address, district_node, province_node, use_similarity=True)
+                        sticky_address, district_node, province_node,
+                        use_similarity=True, use_iterative_similarity=use_iterative_similarity)
 
             current_province_name = ''
             if province_node is not None:
@@ -265,29 +313,12 @@ class Solution:
         output_nodes = [province_node, district_node, ward_node]
         if output_nodes.count(None) > 1:
             # for case that has no comma
-            # if len(segment_addresses) == 1:
-            #     for node in output_nodes:
-            #         if node is None:
-            #             continue
-            #         clean_address = clean_address.replace(node.node_name, '')
-            #         sticky_address = sticky_address.replace(node.node_name, '')
-            #     num_split = output_nodes.count(None)
-            #     wc_per_split = int(len(clean_address) / num_split)
-            #     new_segment_addresses = []
-            #     for i in range(num_split - 1):
-            #         new_segment_addresses.append(clean_address[i * wc_per_split: (i + 1) * wc_per_split])
-            #     new_segment_addresses.append(clean_address[(num_split - 1) * wc_per_split: ])
-            #     province_node1, district_node1, ward_node1, _ = self.find_province_district_ward_node(
-            #         new_segment_addresses, sticky_address, clean_address, use_similarity=True)
-            #     if province_node is None:
-            #         province_node = province_node1
-            #     if district_node is None:
-            #         district_node = district_node1
-            #     if ward_node is None:
-            #         ward_node = ward_node1
-            # else:
-            province_node, district_node, ward_node, _ = self.find_province_district_ward_node(
-                segment_addresses, sticky_address, clean_address, use_similarity=True)
+            if len(segment_addresses) < 3:
+                province_node, district_node, ward_node, _ = self.find_province_district_ward_node(
+                    segment_addresses, sticky_address, clean_address, use_iterative_similarity=True)
+            else:
+                province_node, district_node, ward_node, _ = self.find_province_district_ward_node(
+                    segment_addresses, sticky_address, clean_address, use_similarity=True)
         elif output_nodes.count(None) == 1:
             if ward_node is None:
                 ward_node, _, _ = self.find_ward_node(
@@ -328,6 +359,12 @@ def remove_integer_from_string(s: str, excluded_numbers=None):
 
 
 if __name__ == '__main__':
-    input = "T.P Phan Rang-Tháp lhàm  Ninh Thuận"
+    input = "'FHim Lam   Điện Biê'"
+    import time
     solution = Solution()
-    solution.process(input)
+    st = time.time()
+    output = solution.process(input)
+    finish = time.time()
+    time_elapsed = finish - st
+    print(time_elapsed)
+    print(output)
