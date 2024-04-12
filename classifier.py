@@ -38,6 +38,7 @@ class Solution:
         found_node = None
         temp_sticky_address = sticky_address
         index = -1
+        count = 0
         while len(temp_sticky_address) > 0 and found_node is None:
             current_word = ''
             for j in range(2, len(temp_sticky_address) + 1, 2):
@@ -47,10 +48,13 @@ class Solution:
                     current_word = temp_sticky_address[-j: -j + 2] + current_word
                 found_word = self.phrase_trie.search(
                     [current_word], parent_node=parent_node, use_similarity=True)
+                count += 1
                 if found_word is not None:
                     found_node = found_word
                     index = -j
                     break
+            if count >= 3:
+                break
             if len(temp_sticky_address) == 1:
                 temp_sticky_address = ''
             else:
