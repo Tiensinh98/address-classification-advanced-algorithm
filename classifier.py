@@ -15,7 +15,7 @@ class Solution:
         # build trie
         self.phrase_trie = None
         self.letter_trie = None
-        self.build_trie('dataset/new_dataset.csv')
+        self.build_trie('dataset/dataset.csv')
 
     def build_trie(self, data_filepath: str):
         with open(data_filepath, mode='r', encoding='utf-8') as file:
